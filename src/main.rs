@@ -20,16 +20,19 @@ fn main() {
                 if let Err(e) = std::env::set_current_dir(&root) {
                     eprintln!("cd: {}: {}", e, new_dir);
                 }
-            }
+            },
+            "exit" => return,
             command => {
                 let mut child = Command::new(command)
                     .args(args)
-                    .spawn()
-                    .unwrap();
+                    .spawn();
 
-                child.wait();
+                match child {
+                    Ok(mut child) => { child.wait(); },
+                    Err(e) => { eprintln!("{}", e); },
+                };
             }
-        }
+        };
 
     }
 }
