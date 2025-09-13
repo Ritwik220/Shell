@@ -1,8 +1,18 @@
 use std::process::Command;
+use std::io::{stdout, Write};
 
 fn main() {
-    let mut input = String::new();
-    std::io::stdin().read_line(&mut input).unwrap();
-    let command = input.trim();
-    Command::new(command).spawn().unwrap();
+    loop{
+        print!("> ");
+        let _ = stdout().flush();
+
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input).unwrap();
+        let command = input.trim();
+
+        let mut child = Command::new(command)
+            .spawn()
+            .unwrap();
+        child.wait().unwrap();
+    }
 }
